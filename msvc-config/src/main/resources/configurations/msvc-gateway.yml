@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: msvc-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enable: true
+      # routes:
+
+server:
+  port: 8081
+eureka:
+  client:
+    register-with-eureka: false
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_HOST:localhost}:${DISCOVERY_PORT:8761}/eureka/

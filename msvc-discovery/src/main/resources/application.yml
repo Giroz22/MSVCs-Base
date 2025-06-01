@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: msvc-discovery
+  config:
+    import: optional:configserver:http://${CONFIG-SERVER-HOST:localhost}:${CONFIG-SERVER-PORT:8888}
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        max-attempts: 10
+        max-interval: 2000

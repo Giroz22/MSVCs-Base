@@ -1,0 +1,69 @@
+services:
+  msvc-config:
+    container_name: msvc-config
+    build: ./msvc-config/
+    ports:
+      - "8888:8888"
+    networks:
+      - uwhub-network
+
+  msvc-discovery:
+    container_name: msvc-discovery
+    build: ./msvc-discovery
+    ports:
+      - "8761:8761"
+    depends_on:
+      - msvc-config
+    networks:
+      - uwhub-network
+    env_file:
+      - ./.env
+    restart: always
+  msvc-gateway:
+    container_name: msvc-gateway
+    build: ./msvc-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - msvc-config
+      - msvc-discovery
+    networks:
+      - uwhub-network
+    env_file:
+      - ./.env
+    restart: always
+
+  db-auth:
+    container_name: "db-auth"
+    image: "mysql:latest"
+    ports:
+      - "3307:3306"
+    networks:
+      - uwhub-network
+    volumes:
+      - data-auth:/etc/mysql/conf.d
+    environment:
+      - "MYSQL_DATABASE=db_auth"
+      - "MYSQL_ROOT_PASSWORD=root123"
+    restart: always
+  msvc-auth:
+    container_name: msvc-auth
+    build: ./msvc-auth
+    ports:
+      - "8082:8082"
+    depends_on:
+      - msvc-config
+      - msvc-discovery
+      - msvc-gateway
+      - db-auth
+    networks:
+      - uwhub-network
+    env_file:
+      - ./.env
+      - ./msvc-auth/.env
+    restart: always
+
+networks:
+  uwhub-network:
+volumes:
+  data-auth:

@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: msvc-discovery
+server:
+  port: ${DISCOVERY_PORT:8761}
+
+eureka:
+  instance:
+    hostname: ${DISCOVERY_HOST:localhost}
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_HOST:localhost}:${DISCOVERY_PORT:8761}/eureka/
