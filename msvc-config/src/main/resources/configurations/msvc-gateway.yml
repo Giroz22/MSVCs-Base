@@ -3,13 +3,19 @@ spring:
     name: msvc-gateway
   cloud:
     gateway:
-      discovery:
-        locator:
-          enable: true
-      # routes:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+          routes:
+            - id: msvc-auth
+              uri: lb://MSVC-AUTH
+              predicates:
+                - Path=/api/auth/**
 
 server:
-  port: 8081
+  port: 8000
 eureka:
   client:
     register-with-eureka: false

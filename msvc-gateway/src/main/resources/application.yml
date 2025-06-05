@@ -9,4 +9,3 @@ spring:
       retry:
         max-attempts: 10
         max-interval: 2000
-
