@@ -4,14 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.waveghost.auth.api.clients.UserClient;
 import com.waveghost.auth.api.dtos.request.AuthRequest;
 import com.waveghost.auth.api.dtos.request.RegisterRequest;
+import com.waveghost.auth.api.dtos.request.UserRequest;
 import com.waveghost.auth.domain.abstract_services.IAuthService;
-import com.waveghost.auth.infrastructure.enums.UserRole;
 import com.waveghost.auth.infrastructure.errors.BadCredentialsException;
-import com.waveghost.auth.infrastructure.errors.UsernameNotFoundException;
-import com.waveghost.auth.persistence.entitites.UserEntity;
-import com.waveghost.auth.persistence.repositories.UserRepository;
+import com.waveghost.auth.infrastructure.errors.EmailAlreadyExistException;
+import com.waveghost.auth.models.UserModel;
 
 @Service
 public class AuthService implements IAuthService{
@@ -20,28 +20,33 @@ public class AuthService implements IAuthService{
     private PasswordEncoder passwordEncoder;
     
     @Autowired
-    private UserRepository userRepository;
+    private UserClient userClient;
 
     @Autowired
     private JwtService jwtService;
 
     @Override
     public String register(RegisterRequest request) {
-        UserEntity userEntity = UserEntity.builder()
-            .username(request.email())
+
+        Boolean emailExist = this.userClient.emailExist(request.email()).getBody();
+
+        if (emailExist) {
+            throw new EmailAlreadyExistException(request.email());
+        }
+
+        UserRequest userRequest = UserRequest.builder()
+            .email(request.email())
             .password(passwordEncoder.encode(request.password()))
-            .role(UserRole.USER)
             .build();
         
-        this.userRepository.save(userEntity);
+        UserModel userSaved = this.userClient.create(userRequest).getBody();
 
-        return jwtService.generateToken(userEntity);
+        return jwtService.generateToken(userSaved);
     }
 
     @Override
     public String login(AuthRequest request) {
-        UserEntity userEntity = this.userRepository.findByUsername(request.email())
-                                    .orElseThrow(() -> new UsernameNotFoundException("Email not found"));
+        UserModel userEntity = this.userClient.getByEmail(request.email()).getBody();
 
         if (!passwordEncoder.matches(request.password(), userEntity.getPassword())) {
             throw new BadCredentialsException("Invalid password");

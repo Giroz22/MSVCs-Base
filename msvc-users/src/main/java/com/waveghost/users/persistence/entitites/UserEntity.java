@@ -1,7 +1,8 @@
-package com.waveghost.auth.persistence.entitites;
+package com.waveghost.users.persistence.entitites;
 
-import com.waveghost.auth.infrastructure.enums.UserRole;
+import com.waveghost.users.infrastructure.enums.UserRole;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -25,10 +26,12 @@ import lombok.Setter;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
-    private String username;
+    @Column(unique = true)
+    private String email;
+    
     private String password;
     
     @Enumerated(EnumType.STRING)

@@ -17,8 +17,9 @@ services:
     networks:
       - uwhub-network
     env_file:
-      - ./.env
+      - ./.env.dev
     restart: always
+
   msvc-gateway:
     container_name: msvc-gateway
     build: ./msvc-gateway
@@ -30,22 +31,9 @@ services:
     networks:
       - uwhub-network
     env_file:
-      - ./.env
+      - ./.env.dev
     restart: always
 
-  db-auth:
-    container_name: "db-auth"
-    image: "mysql:latest"
-    ports:
-      - "3307:3306"
-    networks:
-      - uwhub-network
-    volumes:
-      - data-auth:/etc/mysql/conf.d
-    environment:
-      - "MYSQL_DATABASE=db_auth"
-      - "MYSQL_ROOT_PASSWORD=root123"
-    restart: always
   msvc-auth:
     container_name: msvc-auth
     build: ./msvc-auth
@@ -55,13 +43,41 @@ services:
       - msvc-config
       - msvc-discovery
       - msvc-gateway
-      - db-auth
     networks:
       - uwhub-network
     env_file:
-      - ./.env
-      - ./msvc-auth/.env
+      - ./.env.dev
     restart: always
+
+  users-db:
+    container_name: "users-db"
+    image: "mysql:latest"
+    ports:
+      - "3307:3306"
+    networks:
+      - uwhub-network
+    volumes:
+      - data-auth:/etc/mysql/conf.d
+    environment:
+      - "MYSQL_DATABASE=users_db"
+      - "MYSQL_ROOT_PASSWORD=root123"
+
+  msvc-users:
+    container_name: "msvc-users"
+    build: ./msvc-users
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./.env.dev
+      - ./msvc-users/.env
+    depends_on:
+      - msvc-config
+      - msvc-discovery
+      - msvc-gateway
+      - users-db
+    restart: always
+    networks:
+      - uwhub-network
 
 networks:
   uwhub-network:

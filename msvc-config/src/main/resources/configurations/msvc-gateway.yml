@@ -13,6 +13,10 @@ spring:
               uri: lb://MSVC-AUTH
               predicates:
                 - Path=/api/auth/**
+            - id: msvc-users
+              uri: lb://MSVC-USERS
+              predicates:
+                - Path=/api/users/**
 
 server:
   port: 8000

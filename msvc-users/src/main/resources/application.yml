@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: msvc-users
+  config:
+    import: optional:configserver:http://${CONFIG-SERVER-HOST:localhost}:${CONFIG-SERVER-PORT:8888}

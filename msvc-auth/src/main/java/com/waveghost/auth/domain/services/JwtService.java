@@ -9,7 +9,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.waveghost.auth.persistence.entitites.UserEntity;
+import com.waveghost.auth.models.UserModel;
 
 
 @Service
@@ -17,13 +17,13 @@ public class JwtService {
     private final String SECRET_KEY = "temporal123";
     private final String GENERATOR = "BACKEND-TEMPORAL";
 
-    public String generateToken(UserEntity userEntity){
+    public String generateToken(UserModel userEntity){
 
         Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
 
         return JWT.create()
             .withIssuer(GENERATOR)
-            .withSubject(userEntity.getUsername())
+            .withSubject(userEntity.getEmail())
             .withClaim("role", userEntity.getRole().name())
             .withIssuedAt(new Date())
             .withExpiresAt(new Date(System.currentTimeMillis() + 3600000))

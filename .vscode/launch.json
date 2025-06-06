@@ -42,6 +42,16 @@
       "projectName": "msvc-gateway",
       "args": "",
       "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-MsvcUsersApplication<msvc-users>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.waveghost.users.MsvcUsersApplication",
+      "projectName": "msvc-users",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
     }
   ]
 }
