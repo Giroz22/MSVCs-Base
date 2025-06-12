@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter implements WebFilter{
 
                 String username = jwtUtil.extractUsername(decodedJWT);
 
-                List<String> roles = jwtUtil.getRoles(decodedJWT);
+                List<String> roles = jwtUtil.getAuthorities(decodedJWT);
                 
                 List<SimpleGrantedAuthority> authorities = roles.stream()
                         .map(SimpleGrantedAuthority::new)

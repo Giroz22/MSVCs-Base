@@ -1,6 +1,6 @@
 package com.waveghost.auth.models;
 
-import java.util.Set;
+import com.waveghost.auth.infrastructure.enums.UserRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,12 +13,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class UserModel {
-
-    private String id;
-
-    private String email;
-    private String password;
-    
-    private Set<RoleModel> roles;
+public class RoleModel {
+    private UserRole role;
 }

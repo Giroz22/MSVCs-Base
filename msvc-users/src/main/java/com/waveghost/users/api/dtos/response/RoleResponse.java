@@ -1,6 +1,6 @@
 package com.waveghost.users.api.dtos.response;
 
-import java.util.Set;
+import com.waveghost.users.infrastructure.enums.UserRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +13,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class UserResponse {
-    private String id;
-    private String email;
-    private Set<RoleResponse> roles;
+public class RoleResponse {
+    private UserRole role;
 }

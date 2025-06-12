@@ -43,17 +43,15 @@ public class JwtUtil {
         return decodedJWT.getSubject();
     }
 
-    public List<String> getRoles(DecodedJWT decodedJWT){
-        List<String> roles = decodedJWT.getClaim("role").asList(String.class);
-        if (roles == null) {
-            // Si el claim "roles" no existe o no es una lista de Strings
-            // Intenta leerlo como un solo String (ej. "ADMIN,USER")
-            String rolesString = decodedJWT.getClaim("role").asString();
-            if (rolesString != null && !rolesString.isEmpty()) {
-                return Arrays.asList(rolesString.split(","));
+    public List<String> getAuthorities(DecodedJWT decodedJWT){
+        List<String> authorities = decodedJWT.getClaim("authorities").asList(String.class);
+        if (authorities == null) {
+            String authoritiesString = decodedJWT.getClaim("authorities").asString();
+            if (authoritiesString != null && !authoritiesString.isEmpty()) {
+                return Arrays.asList(authoritiesString.split(","));
             }
         }
-        return roles != null ? roles : new ArrayList<>();
+        return authorities != null ? authorities : new ArrayList<>();
     }
 
 }

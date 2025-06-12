@@ -23,9 +23,12 @@ public class SecurityConfig {
             .csrf(ServerHttpSecurity.CsrfSpec::disable)
             .authorizeExchange(exchange -> exchange
                 .pathMatchers("/api/auth/**").permitAll()
-                .pathMatchers("/api/users/**").authenticated()
-                
-                .anyExchange().denyAll()
+                .pathMatchers(
+                    "/api/users/update/**",
+                    "/api/users/delete/**",
+                    "/api/users/get-all/**"
+                ).hasRole("USER")                
+                .anyExchange().hasRole("ROOT")
             )
             .authenticationManager(reactiveAuthenticationManager())
             .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)

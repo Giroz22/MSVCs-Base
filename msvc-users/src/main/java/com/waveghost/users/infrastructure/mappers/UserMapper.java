@@ -13,12 +13,17 @@ import com.waveghost.users.api.dtos.request.UserRequest;
 import com.waveghost.users.api.dtos.response.UserResponse;
 import com.waveghost.users.persistence.entitites.UserEntity;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+    componentModel = "spring", 
+    uses = { 
+        RoleMapper.class 
+    }
+)
 public interface UserMapper {
 
     @Mappings({
         @Mapping(target = "id", ignore = true),
-        @Mapping(target = "role", ignore = true)
+        @Mapping(target = "roles", ignore = true)
     })
     UserEntity ToUserEntity(UserRequest request);
 

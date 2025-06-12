@@ -1,6 +1,7 @@
 package com.waveghost.users.domain.services;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,9 @@ import com.waveghost.users.domain.abstract_services.IUserService;
 import com.waveghost.users.infrastructure.enums.UserRole;
 import com.waveghost.users.infrastructure.exceptions.NotFoundException;
 import com.waveghost.users.infrastructure.mappers.UserMapper;
+import com.waveghost.users.persistence.entitites.RoleEntity;
 import com.waveghost.users.persistence.entitites.UserEntity;
+import com.waveghost.users.persistence.repositories.RoleRepository;
 import com.waveghost.users.persistence.repositories.UserRepository;
 
 @Service
@@ -20,12 +23,23 @@ public class UserServiceImpl implements IUserService{
     private UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Override
     @Transactional
     public UserEntity create(UserEntity entity) {
-        entity.setRole(UserRole.USER);
+
+        RoleEntity roleUser = roleRepository.findByRole(UserRole.USER).orElseThrow(
+            ()-> new RuntimeException("Role was not found") 
+        );
+
+        entity.setRoles(
+            Set.of(roleUser)
+        );
+
         return this.userRepository.save(entity);
     }
 
