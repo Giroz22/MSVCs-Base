@@ -31,14 +31,14 @@ public class MsvcUsersApplication {
 
 			if (!hasRoles) {
 				RoleEntity rootRole = roleRepository.save(new RoleEntity(null, UserRole.ROOT));
-				RoleEntity userRole = roleRepository.save(new RoleEntity(null, UserRole.USER));
+				roleRepository.save(new RoleEntity(null, UserRole.USER));
 
 				if (!hasRoot) {
 					userRepository.save(new UserEntity(
 						null, 
 						"giraldosernaalejandro@gmail.com",
 						new BCryptPasswordEncoder().encode("QPC9RMDa"),
-						Set.of(rootRole, userRole)
+						Set.of(rootRole)
 					));
 				}
 			}

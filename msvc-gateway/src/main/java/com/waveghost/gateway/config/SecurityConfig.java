@@ -1,4 +1,4 @@
-package com.waveghost.gateway.infrastructure.config;
+package com.waveghost.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,7 @@ import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
-import com.waveghost.gateway.infrastructure.filters.JwtAuthenticationFilter;
+import com.waveghost.gateway.filters.JwtAuthenticationFilter;
 
 import reactor.core.publisher.Mono;
 

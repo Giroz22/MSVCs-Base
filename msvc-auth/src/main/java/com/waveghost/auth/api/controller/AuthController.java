@@ -41,5 +41,4 @@ public class AuthController {
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Hello Everyone Authenticated!!");
     }
-    
 }

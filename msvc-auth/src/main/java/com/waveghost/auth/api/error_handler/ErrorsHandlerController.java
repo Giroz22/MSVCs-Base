@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.waveghost.auth.api.dtos.response.errors.ErrorResponse;
 import com.waveghost.auth.infrastructure.errors.BadCredentialsException;
@@ -21,17 +22,18 @@ public class ErrorsHandlerController {
     @Autowired
     private ObjectMapper objectMapper;
     
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({
         UsernameNotFoundException.class,
         BadCredentialsException.class,
-        EmailAlreadyExistException.class
+        EmailAlreadyExistException.class,
+        JWTVerificationException.class
     })
     public ResponseEntity<ErrorResponse> badRequestErrorHandler(Exception e){
         return ResponseEntity.badRequest().body(
             ErrorResponse.builder()
-            .status(HttpStatus.BAD_REQUEST.name())
-            .code(HttpStatus.BAD_REQUEST.value())
+            .status(HttpStatus.UNAUTHORIZED.name())
+            .code(HttpStatus.UNAUTHORIZED.value())
             .message(e.getMessage())
             .build()
         );
