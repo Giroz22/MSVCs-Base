@@ -10,6 +10,7 @@ import org.mapstruct.Mappings;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import com.waveghost.users.api.dtos.request.RoleRequest;
+import com.waveghost.users.api.dtos.response.RoleResponse;
 import com.waveghost.users.persistence.entitites.RoleEntity;
 
 @Mapper(componentModel = "spring")
@@ -22,6 +23,8 @@ public interface RoleMapper {
 
     RoleRequest ToDto(RoleEntity entity);
     List<RoleRequest> ToDto(List<RoleEntity> entity);
+
+    RoleResponse ToResponse(RoleEntity entity);
 
     @BeanMapping( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
     void copy(RoleEntity source, @MappingTarget RoleEntity target);

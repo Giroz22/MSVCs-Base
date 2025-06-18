@@ -5,6 +5,11 @@ spring:
 server:
   port: 8001
 
+auth.secret.key: ${AUTH_SECRET_KEY:temporal123}
+auth.generator: ${AUTH_GENERATOR_NAME:BACKEND-TEMPORAL}
+auth.root.email: ${AUTH_ROOT_EMAIL:alejo@gmail.com}
+auth.root.password: ${AUTH_ROOT_PASSWORD:alejo1234}
+
 eureka:
   client:
     serviceUrl:

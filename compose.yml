@@ -47,6 +47,7 @@ services:
       - uwhub-network
     env_file:
       - ./.env.dev
+      - ./msvc-auth/.env
     restart: always
 
   users-db:

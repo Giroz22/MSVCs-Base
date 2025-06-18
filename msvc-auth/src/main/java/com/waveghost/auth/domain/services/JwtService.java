@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -23,11 +24,24 @@ import com.waveghost.auth.models.UserModel;
 
 @Service
 public class JwtService implements IJwtService {
-    private final String SECRET_KEY = "temporal123";
-    private final String GENERATOR = "BACKEND-TEMPORAL";
+
+    
+    private final String SECRET_KEY;
+
+    private final String GENERATOR;
 
     @Autowired
     private UserClient userClient;
+
+    public JwtService(
+        @Value("${auth.secret.key}") 
+        String sECRET_KEY,
+        @Value("${auth.generator}") 
+        String gENERATOR
+    ) {
+        SECRET_KEY = sECRET_KEY;
+        GENERATOR = gENERATOR;
+    }
 
     public String generateToken(UserModel userEntity){
 

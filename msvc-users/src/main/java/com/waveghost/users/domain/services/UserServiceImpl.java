@@ -44,6 +44,25 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
+    @Transactional
+    public UserEntity create(UserEntity entity, List<UserRole> roles) {
+
+        List<RoleEntity> rolesUser = roles.stream().map( userRole ->
+            roleRepository
+                .findByRole(userRole)
+                .orElseThrow(
+                    () -> new RuntimeException("Role: " + userRole + " was not found") 
+                )
+        ).toList(); 
+
+        entity.setRoles(
+            Set.copyOf(rolesUser)
+        );
+
+        return this.userRepository.save(entity);
+    }
+
+    @Override
     public List<UserEntity> getAll() {
         return this.userRepository.findAll();
     }

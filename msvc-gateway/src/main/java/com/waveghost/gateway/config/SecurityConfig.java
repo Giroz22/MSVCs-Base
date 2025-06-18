@@ -27,7 +27,7 @@ public class SecurityConfig {
                     "/api/users/update/**",
                     "/api/users/delete/**",
                     "/api/users/get-all/**"
-                ).hasRole("USER")                
+                ).hasAnyRole("USER", "ROOT")                
                 .anyExchange().hasRole("ROOT")
             )
             .authenticationManager(reactiveAuthenticationManager())

@@ -36,7 +36,8 @@ public class UserController {
         return ResponseEntity.status(201).body(
             this.userMapper.ToDto(
                 this.userService.create(
-                    this.userMapper.ToUserEntity(request)
+                    this.userMapper.ToUserEntity(request),
+                    request.getRoles()
                 )
             )
         );
