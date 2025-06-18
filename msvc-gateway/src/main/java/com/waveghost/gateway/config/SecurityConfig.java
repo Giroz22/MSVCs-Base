@@ -22,12 +22,7 @@ public class SecurityConfig {
         return http
             .csrf(ServerHttpSecurity.CsrfSpec::disable)
             .authorizeExchange(exchange -> exchange
-                .pathMatchers("/api/auth/**").permitAll()
-                .pathMatchers(
-                    "/api/users/update/**",
-                    "/api/users/delete/**",
-                    "/api/users/get-all/**"
-                ).hasAnyRole("USER", "ROOT")                
+                .pathMatchers("/api/auth/**").permitAll()               
                 .anyExchange().hasRole("ROOT")
             )
             .authenticationManager(reactiveAuthenticationManager())
